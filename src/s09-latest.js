@@ -26,5 +26,9 @@ export function createLatestOnly() {
 // been called for `ms` milliseconds, then calls fn once, with the LAST arguments.
 // Typing "learn" fast should search once, for "learn" — not five times.
 export function debounce(fn, ms) {
-  throw new Error("TODO");
+  let timer = null;
+  return (...args) => {
+    clearTimeout(timer); // a new call cancels the one still waiting
+    timer = setTimeout(() => fn(...args), ms);
+  };
 }

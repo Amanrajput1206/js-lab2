@@ -178,9 +178,12 @@ async function load() {
 // ---------------------------------------------------------------------------
 // Step 4 (section 07) — events. One listener per region (event delegation).
 // ---------------------------------------------------------------------------
+// The query is stored on every keystroke, but the request waits until typing
+// pauses for 300 ms — typing "learn" searches once, not five times.
+const loadSoon = debounce(load, 300);
 els.search.addEventListener("input", () => {
   dispatch({ type: "SET_QUERY", query: els.search.value });
-  load();
+  loadSoon();
 });
 
 els.departments.addEventListener("click", (event) => {

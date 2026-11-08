@@ -48,6 +48,10 @@ export function transition(state, event) {
       // Stretch: also refuse a full course, or one that would go over 24 credits.
       const { id, code, title, credits } = event.course;
       if (state.planner.some((c) => c.id === id)) return state;
+      // Stretch: no full courses, and never over 24 credits.
+      if (event.course.seatsLeft === 0) return state;
+      const planned = state.planner.reduce((sum, c) => sum + c.credits, 0);
+      if (planned + credits > 24) return state;
       return { ...state, planner: [...state.planner, { id, code, title, credits }] };
     }
     case "REMOVE": {
